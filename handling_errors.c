@@ -1,7 +1,7 @@
 #include "shell.h"
 
-int num_len(int num);
 char *_itoa(int num);
+int num_len(int num);
 int create_error(char **args, int err);
 char *error_126(char **args);
 char *error_127(char **args);
@@ -16,8 +16,10 @@ char *error_127(char **args);
 
 int num_len(int num)
 {
+	int length;
 	unsigned int number;
-	int length = 1;
+
+	length = 1;
 
 	if (num < 0)
 	{
@@ -33,7 +35,6 @@ int num_len(int num)
 		length++;
 		number /= 10;
 	}
-
 	return (length);
 }
 
@@ -47,13 +48,17 @@ int num_len(int num)
 
 char *_itoa(int num)
 {
+	int length;
 	char *buffer;
-	int length = num_len(num);
 	unsigned int number;
 
+	length = num_len(num);
 	buffer = malloc(sizeof(char) * (length + 1));
+
 	if (!buffer)
+	{
 		return (NULL);
+	}
 
 	buffer[length] = '\0';
 
@@ -66,8 +71,8 @@ char *_itoa(int num)
 	{
 		number = num;
 	}
-
 	length--;
+
 	do {
 		buffer[length] = (number % 10) + '0';
 		number /= 10;
@@ -114,10 +119,13 @@ int create_error(char **args, int err)
 		error = error_127(args);
 		break;
 	}
+
 	write(STDERR_FILENO, error, _strlen(error));
 
 	if (error)
+	{
 		free(error);
+	}
 	return (err);
 
 }
@@ -133,15 +141,17 @@ int create_error(char **args, int err)
 
 char *error_126(char **args)
 {
-	char *error, *history_str;
 	int length;
+	char *error, *history_str;
 
 	history_str = _itoa(hist);
+
 	if (!history_str)
 		return (NULL);
 
-	length = _strlen(name) + _strlen(history_str) + _strlen(args[0]) + 24;
+	length = _strlen(name) + _strlen(history_str) + _strlen(args[0]) + 25;
 	error = malloc(sizeof(char) * (length + 1));
+
 	if (!error)
 	{
 		free(history_str);
@@ -170,15 +180,19 @@ char *error_126(char **args)
 
 char *error_127(char **args)
 {
-	char *error, *history_str;
 	int length;
+	char *error, *history_str;
 
 	history_str = _itoa(hist);
-	if (!history_str)
-		return (NULL);
 
-	length = _strlen(name) + _strlen(history_str) + _strlen(args[0]) + 16;
+	if (!history_str)
+	{
+		return (NULL);
+	}
+
+	length = _strlen(name) + _strlen(history_str) + _strlen(args[0]) + 18;
 	error = malloc(sizeof(char) * (length + 1));
+
 	if (!error)
 	{
 		free(history_str);
